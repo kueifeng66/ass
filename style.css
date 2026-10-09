@@ -1,0 +1,872 @@
+/* ==========================================================================
+   BUTT SMACKER - STYLESHEET
+   Responsive, cartoon arcade aesthetic with layered depth
+   ========================================================================== */
+
+:root {
+  --primary: #ff4757;
+  --primary-dark: #c0392b;
+  --accent: #ffa502;
+  --bg-sky: #70a1ff;
+  --grass-top: #2ed573;
+  --grass-bottom: #1e824c;
+  --hole-rim: #5c381c;
+  --hole-depth: #231206;
+  --text-color: #2f3542;
+  --gold: #f1c40f;
+  --font-family: 'Fredoka', 'Nunito', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-family);
+  background: linear-gradient(180deg, #5352ed 0%, #3742fa 40%, #2f3542 100%);
+  touch-action: manipulation;
+}
+
+/* App Container */
+#game-app {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 20%, #70a1ff 0%, #2e86de 50%, #1e3799 100%);
+}
+
+/* Background Cartoon Clouds / Sun */
+.bg-decorations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 45%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 50px;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.08));
+  animation: floatCloud linear infinite;
+}
+.cloud::before, .cloud::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+.cloud-1 {
+  width: 140px;
+  height: 45px;
+  top: 15%;
+  left: -150px;
+  animation-duration: 34s;
+}
+.cloud-1::before {
+  width: 55px;
+  height: 55px;
+  top: -24px;
+  left: 20px;
+}
+.cloud-1::after {
+  width: 70px;
+  height: 70px;
+  top: -35px;
+  right: 25px;
+}
+
+.cloud-2 {
+  width: 180px;
+  height: 55px;
+  top: 30%;
+  left: -200px;
+  animation-duration: 48s;
+  animation-delay: 12s;
+  opacity: 0.75;
+}
+.cloud-2::before {
+  width: 65px;
+  height: 65px;
+  top: -28px;
+  left: 30px;
+}
+.cloud-2::after {
+  width: 85px;
+  height: 85px;
+  top: -42px;
+  right: 35px;
+}
+
+@keyframes floatCloud {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(100vw + 300px)); }
+}
+
+/* Top HUD Banner */
+.hud-bar {
+  position: relative;
+  z-index: 10;
+  width: min(94%, 720px);
+  margin-top: clamp(8px, 2dvh, 18px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: 24px;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25), 0 4px 0 #dcdde1;
+  border: 3px solid #f1f2f6;
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hud-label {
+  font-size: clamp(10px, 1.8vmin, 13px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #747d8c;
+}
+
+.hud-value {
+  font-size: clamp(20px, 4.5vmin, 32px);
+  font-weight: 900;
+  color: #2f3542;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+#hud-score {
+  color: #ff4757;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
+}
+
+#hud-timer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 90px;
+}
+
+#hud-timer {
+  color: #ffa502;
+  transition: color 0.3s;
+}
+
+#hud-timer.urgent {
+  color: #e84118;
+  animation: pulseTimer 0.6s infinite alternate ease-in-out;
+}
+
+@keyframes pulseTimer {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.15); }
+}
+
+.timer-progress-track {
+  width: 100%;
+  height: 6px;
+  background: #dfe4ea;
+  border-radius: 3px;
+  margin-top: 3px;
+  overflow: hidden;
+}
+
+.timer-progress-fill {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #ffa502, #ff4757);
+  transition: width 0.2s linear;
+}
+
+.hud-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.hud-btn {
+  background: #f1f2f6;
+  border: none;
+  border-radius: 14px;
+  width: clamp(36px, 7vmin, 44px);
+  height: clamp(36px, 7vmin, 44px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(16px, 3.5vmin, 22px);
+  cursor: pointer;
+  box-shadow: 0 4px 0 #ced6e0;
+  transition: transform 0.1s, box-shadow 0.1s, background 0.2s;
+}
+
+.hud-btn:hover {
+  background: #ffffff;
+}
+
+.hud-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #ced6e0;
+}
+
+/* Combo Badge Overlay */
+.combo-badge {
+  position: absolute;
+  top: 75px;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  background: linear-gradient(135deg, #ff4757, #ffa502);
+  color: white;
+  padding: 6px 18px;
+  border-radius: 50px;
+  font-weight: 900;
+  font-size: clamp(14px, 2.8vmin, 20px);
+  box-shadow: 0 6px 15px rgba(255, 71, 87, 0.45);
+  border: 2px solid white;
+  pointer-events: none;
+  z-index: 15;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.combo-badge.active {
+  transform: translateX(-50%) scale(1);
+}
+
+/* Game Area: Grassy Hill & 3x3 Grid */
+.game-surface {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.lawn-container {
+  position: relative;
+  width: min(92vmin, 580px);
+  height: min(92vmin, 580px);
+  background: linear-gradient(145deg, #2ed573 0%, #26af5f 50%, #1e824c 100%);
+  border-radius: 36px;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.35),
+    inset 0 6px 12px rgba(255, 255, 255, 0.3),
+    inset 0 -8px 16px rgba(0, 0, 0, 0.25);
+  border: 8px solid #13693d;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: clamp(12px, 2.5vmin, 24px);
+  padding: clamp(16px, 3vmin, 30px);
+  cursor: none; /* Hide default cursor to use cartoon slap hand */
+}
+
+/* Individual Hole Slot */
+.hole-slot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: visible;
+}
+
+/* Layer 1: Hole Pit / Depth */
+.hole-base {
+  position: absolute;
+  bottom: 0;
+  width: 90%;
+  height: 48%;
+  background: radial-gradient(ellipse at 50% 40%, var(--hole-depth) 0%, #110702 70%, var(--hole-rim) 100%);
+  border-radius: 50%;
+  box-shadow: 
+    inset 0 10px 14px rgba(0, 0, 0, 0.8),
+    0 6px 10px rgba(0, 0, 0, 0.35);
+  z-index: 1;
+}
+
+/* Layer 2: Butt Container (Slides out from inside hole) */
+.butt-wrapper {
+  position: absolute;
+  bottom: 12%;
+  width: 82%;
+  height: 85%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(90%) scale(0.65);
+  opacity: 0;
+  visibility: hidden;
+  clip-path: inset(-150% -50% 12% -50%);
+  transition: transform 0.24s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.18s ease-in, visibility 0.24s;
+  pointer-events: none;
+}
+
+.butt-wrapper.up {
+  transform: translateY(-20%) scale(1);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.15s ease-out;
+}
+
+.butt-wrapper.hit {
+  animation: buttHitSquash 0.32s ease-out forwards;
+}
+
+@keyframes buttHitSquash {
+  0% { transform: translateY(-20%) scale(1, 1); opacity: 1; }
+  25% { transform: translateY(-10%) scale(1.3, 0.65) rotate(-6deg); opacity: 1; }
+  50% { transform: translateY(5%) scale(1.15, 0.8) rotate(4deg); opacity: 0.9; }
+  100% { transform: translateY(90%) scale(0.65, 0.65); opacity: 0; }
+}
+
+/* Layer 3: Hole Front Lip & Dirt Mound (covers butt bottom) */
+.hole-front {
+  position: absolute;
+  bottom: 0;
+  width: 94%;
+  height: 28%;
+  background: radial-gradient(ellipse at 50% 120%, transparent 60%, rgba(0,0,0,0.4) 100%);
+  border-bottom: 7px solid #165b32;
+  border-radius: 50%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Cute grass tufts around hole */
+.grass-tuft {
+  position: absolute;
+  bottom: -4px;
+  width: 14px;
+  height: 12px;
+  background: #7bed9f;
+  border-radius: 10px 10px 0 0;
+  transform: rotate(-15deg);
+  z-index: 4;
+  pointer-events: none;
+}
+.grass-tuft::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  bottom: 0;
+  width: 10px;
+  height: 16px;
+  background: #2ed573;
+  border-radius: 8px 8px 0 0;
+  transform: rotate(30deg);
+}
+
+/* ==========================================================================
+   BUTT VECTOR GRAPHICS (SVG Cheeks)
+   ========================================================================== */
+.butt-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.25));
+  transition: transform 0.15s ease-out;
+  cursor: pointer;
+}
+
+.butt-wrapper.up:not(.hit) .butt-svg {
+  animation: buttIdleWiggle 1.4s infinite ease-in-out alternate;
+}
+
+@keyframes buttIdleWiggle {
+  0% { transform: rotate(-3deg) scale(1); }
+  50% { transform: rotate(0deg) scale(1.02, 0.98); }
+  100% { transform: rotate(3deg) scale(1); }
+}
+
+/* Handprint Slap Mark on Butt Cheek */
+.slap-mark {
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+.butt-wrapper.hit .slap-mark {
+  opacity: 0.95;
+}
+
+/* Golden Butt Special Variant */
+.butt-wrapper.golden .butt-svg {
+  filter: drop-shadow(0 0 16px rgba(241, 196, 15, 0.8)) drop-shadow(0 8px 12px rgba(0,0,0,0.3));
+}
+.butt-wrapper.golden .cheek-left,
+.butt-wrapper.golden .cheek-right {
+  fill: url(#goldenSkinGradient) !important;
+}
+
+/* ==========================================================================
+   PARTICLE CANVAS & SCREEN SPLAT LAYER
+   ========================================================================== */
+#particle-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* Screen Splats (Poop hitting the screen camera glass & blocking view) */
+#screen-splats {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 35;
+  overflow: hidden;
+}
+
+.screen-splat-item {
+  position: absolute;
+  pointer-events: none;
+  transform-origin: center center;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.45));
+  animation: splatImpactDrip 6.5s cubic-bezier(0.18, 0.89, 0.32, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes splatImpactDrip {
+  0% {
+    opacity: 0;
+    transform: scale(0.15) rotate(var(--rot, 0deg));
+  }
+  3% {
+    opacity: 0.98;
+    transform: scale(1.12) rotate(var(--rot, 0deg));
+  }
+  7% {
+    opacity: 0.96;
+    transform: scale(1) rotate(var(--rot, 0deg));
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1) translateY(18px) rotate(var(--rot, 0deg));
+  }
+  75% {
+    opacity: 0.88;
+    transform: scale(0.99) translateY(34px) rotate(var(--rot, 0deg));
+  }
+  90% {
+    opacity: 0.45;
+    transform: scale(0.97) translateY(48px) rotate(var(--rot, 0deg));
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95) translateY(56px) rotate(var(--rot, 0deg));
+  }
+}
+
+/* Subtle camera shake when poop slams into the screen lens */
+#game-app.lens-hit {
+  animation: lensShake 0.18s ease-out;
+}
+
+@keyframes lensShake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(3px, -4px); }
+  50% { transform: translate(-3px, 3px); }
+  75% { transform: translate(2px, -1px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ==========================================================================
+   BUZZING FLIES (Drawn to excessive poop on screen)
+   ========================================================================== */
+#screen-flies {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 40;
+  overflow: hidden;
+}
+
+.fly-entity {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  pointer-events: none;
+  will-change: transform, left, top;
+  transform-origin: center center;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
+  transition: opacity 0.3s;
+}
+
+.fly-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.fly-wing-left {
+  transform-origin: 17px 15px;
+  animation: wingBuzzLeft 0.035s infinite alternate ease-in-out;
+}
+
+.fly-wing-right {
+  transform-origin: 17px 15px;
+  animation: wingBuzzRight 0.035s infinite alternate ease-in-out;
+}
+
+@keyframes wingBuzzLeft {
+  0% { transform: rotate(-30deg) scaleY(0.85); opacity: 0.8; }
+  100% { transform: rotate(20deg) scaleY(1.15); opacity: 0.35; }
+}
+
+@keyframes wingBuzzRight {
+  0% { transform: rotate(30deg) scaleY(0.85); opacity: 0.8; }
+  100% { transform: rotate(-20deg) scaleY(1.15); opacity: 0.35; }
+}
+
+.fly-entity.landed .fly-wing-left,
+.fly-entity.landed .fly-wing-right {
+  animation-duration: 0.18s; /* Slow twitch while feeding */
+}
+
+.fly-entity.swatted {
+  animation: flySwatSquash 0.5s ease-out forwards;
+}
+
+@keyframes flySwatSquash {
+  0% { transform: scale(1.2, 0.4) rotate(45deg); opacity: 1; }
+  40% { transform: scale(1.4, 0.3) translateY(20px) rotate(90deg); opacity: 0.8; }
+  100% { transform: scale(0.6, 0.2) translateY(80px) rotate(180deg); opacity: 0; }
+}
+
+/* Floating Comic Texts (+1, SPLAT!, NICE!) */
+.floating-text {
+  position: absolute;
+  font-size: clamp(20px, 4vmin, 32px);
+  font-weight: 900;
+  pointer-events: none;
+  z-index: 30;
+  text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 10px rgba(0,0,0,0.3);
+  animation: floatUpFade 0.85s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+
+@keyframes floatUpFade {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.4);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -20px) scale(1.2);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -75px) scale(0.8);
+  }
+}
+
+/* ==========================================================================
+   CARTOON SLAPPING HAND (PLAYER CURSOR)
+   ========================================================================== */
+#player-hand {
+  position: fixed;
+  top: -200px;
+  left: -200px;
+  width: clamp(75px, 12vmin, 110px);
+  height: clamp(75px, 12vmin, 110px);
+  pointer-events: none;
+  z-index: 50;
+  transform: translate(-50%, -50%) rotate(-15deg);
+  transition: transform 0.05s ease-out;
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.35));
+  will-change: transform, left, top;
+  display: block;
+}
+
+#player-hand.slapping {
+  animation: handSmackDown 0.16s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes handSmackDown {
+  0% {
+    transform: translate(-50%, -50%) rotate(-25deg) scale(1.15);
+  }
+  50% {
+    transform: translate(-50%, -40%) rotate(10deg) scale(0.85, 0.8);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(-15deg) scale(1);
+  }
+}
+
+/* Impact Shockwave Ring */
+.impact-ripple {
+  position: absolute;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 71, 87, 0.85);
+  pointer-events: none;
+  z-index: 22;
+  transform: translate(-50%, -50%) scale(0.2);
+  animation: rippleExpand 0.4s ease-out forwards;
+}
+
+@keyframes rippleExpand {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 1;
+    border-width: 6px;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+/* ==========================================================================
+   OVERLAYS: START SCREEN, PAUSE, GAME OVER
+   ========================================================================== */
+.overlay-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.78);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  padding: 16px;
+}
+
+.overlay-screen.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: #ffffff;
+  width: min(92vw, 440px);
+  border-radius: 32px;
+  padding: clamp(24px, 5vw, 36px) clamp(20px, 4vw, 32px);
+  text-align: center;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.45),
+    0 8px 0 #dfe4ea;
+  border: 4px solid #f1f2f6;
+  transform: scale(0.85) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.overlay-screen.active .modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.modal-header-icon {
+  font-size: clamp(48px, 12vmin, 68px);
+  margin-bottom: 8px;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.15));
+  animation: bounceLogo 2s infinite ease-in-out;
+}
+
+@keyframes bounceLogo {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.05); }
+}
+
+.modal-title {
+  font-size: clamp(26px, 6vmin, 36px);
+  font-weight: 900;
+  color: #2f3542;
+  margin-bottom: 6px;
+  line-height: 1.1;
+}
+
+.modal-title span {
+  color: #ff4757;
+}
+
+.modal-desc {
+  font-size: clamp(14px, 2.5vmin, 16px);
+  color: #747d8c;
+  margin-bottom: 22px;
+  line-height: 1.5;
+}
+
+.highlight-box {
+  background: #f8f9fa;
+  border-radius: 18px;
+  padding: 14px 18px;
+  margin-bottom: 22px;
+  border: 2px dashed #dfe4ea;
+  display: flex;
+  justify-content: space-around;
+}
+
+.stat-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #a4b0be;
+  text-transform: uppercase;
+}
+
+.stat-number {
+  font-size: clamp(22px, 5vmin, 30px);
+  font-weight: 900;
+  color: #2f3542;
+}
+
+.primary-btn {
+  background: linear-gradient(180deg, #ff6b81 0%, #ff4757 100%);
+  color: white;
+  border: none;
+  font-family: inherit;
+  font-size: clamp(18px, 3.8vmin, 22px);
+  font-weight: 900;
+  padding: clamp(12px, 2.8vmin, 16px) 32px;
+  border-radius: 50px;
+  width: 100%;
+  cursor: pointer;
+  box-shadow: 0 8px 0 #c0392b, 0 14px 20px rgba(255, 71, 87, 0.4);
+  transition: transform 0.1s, box-shadow 0.1s;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 0 #c0392b, 0 18px 24px rgba(255, 71, 87, 0.45);
+}
+
+.primary-btn:active {
+  transform: translateY(6px);
+  box-shadow: 0 2px 0 #c0392b, 0 6px 10px rgba(255, 71, 87, 0.3);
+}
+
+.secondary-btn {
+  background: #f1f2f6;
+  color: #57606f;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  padding: 10px 20px;
+  border-radius: 50px;
+  margin-top: 12px;
+  width: 100%;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #ced6e0;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.secondary-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #ced6e0;
+}
+
+/* Rank Trophy Title */
+.rank-badge {
+  display: inline-block;
+  background: #fff0f2;
+  color: #ff4757;
+  font-weight: 800;
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 14px;
+  margin-bottom: 14px;
+  border: 1px solid #ffccd2;
+}
+
+/* Footer / Instructions Bar */
+.bottom-instructions {
+  position: relative;
+  z-index: 10;
+  margin-bottom: clamp(6px, 1.5dvh, 14px);
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(4px);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: clamp(12px, 2vmin, 14px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================================
+   MOBILE & LANDSCAPE ADAPTATION
+   ========================================================================== */
+@media (max-height: 520px) and (orientation: landscape) {
+  #game-app {
+    flex-direction: row;
+    justify-content: center;
+    padding: 6px 20px;
+  }
+
+  .hud-bar {
+    width: 200px;
+    height: 90%;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-top: 0;
+    margin-right: 14px;
+    padding: 12px;
+  }
+
+  .game-surface {
+    height: 100%;
+  }
+
+  .lawn-container {
+    width: min(88vmin, 440px);
+    height: min(88vmin, 440px);
+  }
+
+  .bottom-instructions {
+    display: none;
+  }
+}
