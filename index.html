@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Butt Smacker - 100s Arcade Whack Game</title>
+  <meta name="description" content="A hilarious 100-second arcade game where you smack exposed butts popping out of 9 holes and squirt out poop!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main id="game-app">
+    <!-- Cartoon Sky & Moving Clouds -->
+    <div class="bg-decorations" aria-hidden="true">
+      <div class="cloud cloud-1"></div>
+      <div class="cloud cloud-2"></div>
+    </div>
+
+    <!-- Top HUD Bar -->
+    <header class="hud-bar">
+      <!-- Current Score -->
+      <div class="hud-item">
+        <span class="hud-label">Score</span>
+        <span class="hud-value" id="hud-score">0</span>
+      </div>
+
+      <!-- 100-Second Countdown Timer -->
+      <div class="hud-item" id="hud-timer-container">
+        <span class="hud-label">Time</span>
+        <span class="hud-value" id="hud-timer">01:40</span>
+        <div class="timer-progress-track">
+          <div class="timer-progress-fill" id="timer-progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Audio Mute & Sound Controls -->
+      <div class="hud-actions">
+        <button id="mute-btn" class="hud-btn" aria-label="Toggle Sound" title="Sound On / Off">🔊</button>
+      </div>
+    </header>
+
+    <!-- Floating Combo Badge -->
+    <div id="combo-badge" class="combo-badge" aria-live="polite">COMBO x2! 🔥</div>
+
+    <!-- Main Game Lawn with 9 Holes -->
+    <section class="game-surface" aria-label="Play Field">
+      <div id="lawn-container" class="lawn-container">
+        <!-- 9 Holes will be injected dynamically by game.js -->
+      </div>
+    </section>
+
+    <!-- Bottom Help Text -->
+    <footer class="bottom-instructions">
+      ✋ Tap or click to smack butts before they hide!
+    </footer>
+
+    <!-- Particle Canvas for Poop Squirts -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Screen Glass Poop Splats -->
+    <div id="screen-splats" aria-hidden="true"></div>
+
+    <!-- Cartoon Slapping Hand (Player Avatar) -->
+    <div id="player-hand" aria-hidden="true"></div>
+
+    <!-- ====================================================================
+         START SCREEN MODAL
+         ==================================================================== -->
+    <div id="start-screen" class="overlay-screen active">
+      <div class="modal-card">
+        <div class="modal-header-icon">🍑✋💩</div>
+        <h1 class="modal-title">BUTT <span>SMACKER</span></h1>
+        <p class="modal-desc">
+          9 holes on the lawn. Butts pop up randomly.<br>
+          Use your slapping hand to smack them, squirt out poop, and score points!
+        </p>
+
+        <div class="highlight-box">
+          <div class="stat-col">
+            <span class="stat-label">Duration</span>
+            <span class="stat-number">100s</span>
+          </div>
+          <div class="stat-col">
+            <span class="stat-label">Points / Hit</span>
+            <span class="stat-number">+1</span>
+          </div>
+          <div class="stat-col">
+            <span class="stat-label">Best Record</span>
+            <span class="stat-number" id="start-highscore">0</span>
+          </div>
+        </div>
+
+        <button id="start-btn" class="primary-btn">
+          <span>START SMACKING</span>
+          <span>💥</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         GAME OVER MODAL
+         ==================================================================== -->
+    <div id="game-over-screen" class="overlay-screen">
+      <div class="modal-card">
+        <div class="modal-header-icon">🏁💩🎉</div>
+        <h2 class="modal-title">TIME'S <span>UP!</span></h2>
+        
+        <div id="rank-badge" class="rank-badge">Bum Bouncer 🏓</div>
+
+        <div id="new-record-notice" style="display:none; color:#ff4757; font-weight:900; margin-bottom:10px; font-size:16px;">
+          🎉 NEW HIGH SCORE RECORD! 🎉
+        </div>
+
+        <div class="highlight-box" style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; text-align:center;">
+          <div class="stat-col">
+            <span class="stat-label">Final Score</span>
+            <span class="stat-number" id="final-score">0</span>
+          </div>
+          <div class="stat-col">
+            <span class="stat-label">Best Record</span>
+            <span class="stat-number" id="final-highscore">0</span>
+          </div>
+          <div class="stat-col">
+            <span class="stat-label">Hits Landed</span>
+            <span class="stat-number" id="final-hits">0</span>
+          </div>
+          <div class="stat-col">
+            <span class="stat-label">Accuracy</span>
+            <span class="stat-number" id="final-accuracy">0%</span>
+          </div>
+          <div class="stat-col" style="grid-column: span 2;">
+            <span class="stat-label">Max Combo</span>
+            <span class="stat-number" id="final-max-combo">0</span>
+          </div>
+        </div>
+
+        <button id="restart-btn" class="primary-btn">
+          <span>SMACK AGAIN</span>
+          <span>🔄</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Procedural Web Audio Synthesizer -->
+  <script src="audio.js"></script>
+  <!-- Game Engine & Interaction Physics -->
+  <script src="game.js"></script>
+</body>
+</html>
